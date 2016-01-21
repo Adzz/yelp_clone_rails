@@ -1,10 +1,26 @@
 class ReviewsController < ApplicationController
+  before_action :authenticate_user!, :except => [:index, :show] 
+  before_action :check_author, :only => [:destroy]
+
+  def check_author
+    if current_user.id != Review.find(params[:id]).user_id
+      flash[:notice] = "Nice try, wiseguy. You can only edit reviews you added!"
+      redirect_to "/restaurants" and return
+    end
+  end
 
   def new
     @restaurant = Restaurant.find(params[:restaurant_id])
     @review = Review.new
   end
 
+
+  def destroy
+   @review = Review.find(params[:id])
+   @review.destroy
+   flash[:notice] = "Review Deleted, happy now?"
+   redirect_to "/restaurants"
+  end
 
   def review_params
     params.require(:review).permit(:thoughts, :rating)
