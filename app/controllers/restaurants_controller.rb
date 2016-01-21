@@ -1,6 +1,14 @@
 class RestaurantsController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
-  
+  before_action :check_author, :only => [:edit, :update, :destroy]
+
+  def check_author
+    if current_user.id != Restaurant.find(params[:id]).user_id
+      flash[:notice] = "Nice try, wiseguy. You can only edit restaurants you added!"
+      redirect_to "/restaurants" and return
+    end
+  end
+
   def index
     @restaurants = Restaurant.all
   end
