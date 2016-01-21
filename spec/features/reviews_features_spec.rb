@@ -14,6 +14,13 @@ feature "Reviewing"  do
     expect(page).to have_content "Dench"
   end
 
-
+  scenario 'displays an average rating for all reviews' do
+    sign_in_and_create_restaurant
+    leave_review('So so', '3')
+    click_link "Sign out"
+    sign_in_two 
+    leave_review('Great', '5')
+    expect(page).to have_content('★★★★☆')
+  end
 
 end
