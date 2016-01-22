@@ -14,7 +14,7 @@
         = link_to "Endorse", review_endorsements_path(review), class: 'endorsements-link'
         %span.endorsements_count= review.endorsements.count 
         = 'endorsement'.pluralize review.endorsements.count
-        = link_to "Delete Review", "/restaurants/#{restaurant.id}/reviews/#{review.id}", method: :delete
+        = link_to "Delete Review", "/reviews/#{review.id}", method: :delete
     - else
       %p No reviews
      
